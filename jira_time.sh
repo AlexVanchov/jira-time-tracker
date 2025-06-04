@@ -3,6 +3,12 @@
 # then prints each issue's key, summary, time logged by the specified WORKLOG_AUTHOR on that date.
 # If you pass "compact" as an argument, it will omit printing comments.
 
+# --- Color definitions ---
+ORANGE='\033[1;33m'
+BLUE='\033[0;34m'
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
+
 # --- Configuration ---
 JIRA_BASE_URL="your-jira-instance-url"
 JIRA_USER="your-email@example.com"
@@ -106,7 +112,7 @@ for idx in "${VALID_INDICES[@]}"; do
   formatted=$(format_time "$secs")
 
   echo ""
-  echo "$key – $title: $formatted"
+  echo -e "${ORANGE}$key – $title${NC}: ${BLUE}$formatted${NC}"
 
   # Only print comments if COMPACT=false
   if [ "$COMPACT" = false ]; then
@@ -134,4 +140,4 @@ for idx in "${VALID_INDICES[@]}"; do
 done
 
 echo ""
-echo "Total Time Logged: $(format_time $total_seconds)"
+echo -e "Total Time Logged: ${GREEN}$(format_time $total_seconds)${NC}"
