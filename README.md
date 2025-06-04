@@ -6,7 +6,7 @@ A command-line tool to track and display time logged in Jira for a specific date
 
 1. Clone this repository:
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/AlexVanchov/jira-time-tracker.git
 cd jira-time-tracker
 ```
 
