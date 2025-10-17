@@ -39,7 +39,7 @@ JQL='project = "B.sure Analytics" and timespent is not EMPTY and worklogDate = "
 ENCODED_JQL=$(python3 -c "import urllib.parse; print(urllib.parse.quote('''$JQL'''))")
 
 # Fetch key + summary up front
-SEARCH_URL="$JIRA_BASE_URL/rest/api/2/search?jql=$ENCODED_JQL&fields=key,summary&maxResults=1000"
+SEARCH_URL="$JIRA_BASE_URL/rest/api/3/search/jql?jql=$ENCODED_JQL&fields=key,summary&maxResults=1000"
 
 echo "Fetching issues (key + summary) for $REPORT_DATE (compact=$COMPACT)..."
 raw_response=$(curl -s -u "$JIRA_USER:$JIRA_API_TOKEN" \
@@ -66,7 +66,7 @@ for i in "${!ISSUE_KEYS[@]}"; do
   key="${ISSUE_KEYS[$i]}"
 
   # Fetch both worklog and comment fields (we need worklog to compute time)
-  fetch_url="$JIRA_BASE_URL/rest/api/2/issue/$key?expand=worklog&fields=worklog,comment"
+  fetch_url="$JIRA_BASE_URL/rest/api/3/issue/$key?expand=worklog&fields=worklog,comment"
   issue_json=$(curl -s -u "$JIRA_USER:$JIRA_API_TOKEN" \
     -X GET -H "Content-Type: application/json" "$fetch_url")
 
@@ -117,7 +117,7 @@ for idx in "${VALID_INDICES[@]}"; do
   # Only print comments if COMPACT=false
   if [ "$COMPACT" = false ]; then
     # Fetch comments only
-    fetch_comments_url="$JIRA_BASE_URL/rest/api/2/issue/$key?fields=comment"
+    fetch_comments_url="$JIRA_BASE_URL/rest/api/3/issue/$key?fields=comment"
     issue_json=$(curl -s -u "$JIRA_USER:$JIRA_API_TOKEN" \
       -X GET -H "Content-Type: application/json" "$fetch_comments_url")
 
